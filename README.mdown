@@ -1,0 +1,4 @@
+# MarkLogic-Node Generator
+
+This is a fork of ML Slush. See more information [here](https://github.com/marklogic/slush-marklogic-node)
+

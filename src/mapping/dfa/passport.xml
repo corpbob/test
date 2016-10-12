@@ -1,0 +1,6 @@
+<mapping>
+  <id>ID</id>
+  <passport>passport_number</passport>
+  <personid>person_id</personid>
+  <rootname>passport</rootname>
+</mapping>

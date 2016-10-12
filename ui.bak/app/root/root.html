@@ -1,0 +1,40 @@
+<div class="header" style="background-color: white; margin-top: 5px; margin-bottom: 5px; height: 90px">
+  <div class="container">
+    <div class="row">
+
+      <div class="logo col-md-4">
+        <a href="/classic"><img src="/images/earth77.png" class="pull-left" style="width: 70px"></a>
+        <h2 class="pull-left">
+          &nbsp;OFIS
+        </h2>
+      </div>
+      <div ng-if="ctrl.title" class="col-md-5">
+        <h1>{{ctrl.title}}</h1>
+      </div>
+
+      {{ctrl.currentUser}}
+      <div ng-hide="user.authenticated">
+
+        &nbsp;
+      </div>
+      {{model.user}}
+      <div >
+        <ml-user></ml-user>
+
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="main" style="background-color:#007700; height: 100%">
+  <div class="container" style="margin-bottom: 500px">
+    <div class="search-center">
+
+      <ui-view></ui-view>
+    </div>
+  </div>
+</div>

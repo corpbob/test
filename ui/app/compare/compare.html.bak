@@ -1,0 +1,286 @@
+<div ng-if="ctrl.matches.length > 0 || ctrl.conflicts.length > 0 || ctrl.permMatch.length > 0">
+
+  <ul class="nav nav-tabs" style="margin-top: 20px">
+    <li role="presentation" ng-if="ctrl.matches.length > 0" ng-class="{ active: ctrl.tab === 'matches' }" ng-click="ctrl.show('matches')"><a href="#">Match</a>
+
+    </li>
+    <li role="presentation" ng-if="ctrl.conflicts.length > 0" ng-class="{ active: ctrl.tab === 'conflicts' }" ng-click="ctrl.show('conflicts')"><a href="#">Conflict</a></li>
+    <li role="presentation" ng-if="ctrl.permMatch.length > 0" ng-class="{ active: ctrl.tab === 'permMatch' }" ng-click="ctrl.show('permMatch')"><a href="#">Perm Match</a></li>
+  </ul>
+  <div style="height: 450px">
+
+    <div class="panel panel-default" style="float:left;width: 10%; margin-top: 20px; height: 100%">
+      <table class="table">
+        <tr>
+          <td><label style="font-size: 14pt">Fields</label></td>
+        </tr>
+        <tr>
+          <td><label>ID</label></td>
+        </tr>
+        <tr>
+          <td><label>First Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Middle Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Last Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Passport</label></td>
+        </tr>
+        <tr>
+          <td><label>Birthdate</label></td>
+        </tr>
+        <tr>
+          <td><label>Birthplace</label></td>
+        </tr>
+        <tr>
+          <td><label>Gender</label></td>
+        </tr>
+        <tr>
+          <td></td>
+        </tr>
+      </table>
+
+    </div>
+
+
+    <div class="panel panel-default" style="float:left;width: 23%; margin-top: 20px; margin-left: 5px; height: 100%">
+      <table class="table">
+        <tr>
+          <td><label style="font-size: 14pt">Resolved Record</label></td>
+        </tr>
+        <tr>
+          <td>{{ctrl.doc.id | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved[ctrl.tab].first | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved[ctrl.tab].middle | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved[ctrl.tab].last | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved[ctrl.tab].passport | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved[ctrl.tab].birthdate | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved[ctrl.tab].birthplace | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved[ctrl.tab].gender | stripPrefix | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td></td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div style="width: 66%;float:right; margin-left: 6px">
+      <div ng-show="ctrl.tab === 'matches' && ctrl.matches.length > 0" class="panel panel-default" style="margin-top: 20px">
+        <div style="position: relative">
+          <div style="overflow-x: scroll; margin-left: 10px; margin-right: 10px">
+            <table class="table" style="overflow: auto; width: 100%">
+              <tr class="compare-table-tr">
+                <td>
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio"><label style="font-size: 14pt">Primary</label>
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio"><label style="font-size: 14pt">Match {{$index}}</label>
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio">{{ctrl.doc.id}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input style="visibility:  hidden;: none;" ng-if="m.id" name="id" type="radio">{{m.id}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.first}}" ng-model="ctrl.resolved['matches'].first"  ng-if="ctrl.doc.first" name="first" type="radio">{{ctrl.doc.first | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.first}}" ng-model="ctrl.resolved[ctrl.tab].first" ng-if="m.first"        name="first" type="radio">{{m.first | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.middle}}" ng-model="ctrl.resolved[ctrl.tab].middle" ng-if="ctrl.doc.middle" name="middle" type="radio">{{ctrl.doc.middle | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.middle}}" ng-model="ctrl.resolved[ctrl.tab].middle" ng-if="m.middle" name="middle" type="radio">{{m.middle | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.last}}" ng-model="ctrl.resolved[ctrl.tab].last" ng-if="ctrl.doc.last" name="last" type="radio">{{ctrl.doc.last | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.last}}" ng-model="ctrl.resolved[ctrl.tab].last" ng-if="m.last" name="last" type="radio">{{m.last | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.passport}}" ng-model="ctrl.resolved[ctrl.tab].passport" ng-if="ctrl.doc.passport" name="passport" type="radio">{{ctrl.doc.passport | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.passport}}" ng-model="ctrl.resolved[ctrl.tab].passport" ng-if="m.passport" name="passport" type="radio">{{m.passport | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.birthdate}}" ng-model="ctrl.resolved[ctrl.tab].birthdate" ng-if="ctrl.doc.birthdate" name="birthdate" type="radio">{{ctrl.doc.birthdate | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.birthdate}}" ng-model="ctrl.resolved[ctrl.tab].birthdate" ng-if="m.birthdate" name="birthdate" type="radio">{{m.birthdate | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.birthplace}}" ng-model="ctrl.resolved[ctrl.tab].birthplace" ng-if="ctrl.doc.birthplace" name="birthplace" type="radio">{{ctrl.doc.birthplace | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.birthplace}}" ng-model="ctrl.resolved[ctrl.tab].birthplace" ng-if="ctrl.doc.birthplace" name="birthplace" type="radio">{{m.birthplace | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.gender}}" ng-model="ctrl.resolved[ctrl.tab].gender" ng-if="ctrl.doc.gender" name="gender" type="radio">{{ctrl.doc.gender | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.gender}}" ng-model="ctrl.resolved[ctrl.tab].gender" ng-if="m.gender" name="gender" type="radio">{{m.gender | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.id}}" ng-change="ctrl.choose(ctrl.doc, ctrl.tab)" ng-model="ctrl.allresolved[ctrl.tab]" type="radio">All
+                </td>
+                <td ng-repeat="m in ctrl.tabs['matches'].data">
+                  <input value="{{m.id}}" ng-change="ctrl.choose(m, ctrl.tab)" ng-model="ctrl.allresolved[ctrl.tab]" type="radio">All &nbsp;
+                </td>
+              </tr>
+            </table></div>
+            {{ctrl.resolved['matches']}}
+            <br> all resolved
+            '{{ctrl.allresolved['matches']}}'
+        </div>
+
+      </div>
+    </div>
+
+
+<!--
+    <div style="width: 66%;float:right; margin-left: 6px">
+      <div ng-show="ctrl.tab === 'conflicts'  && ctrl.conflicts.length > 0" class="panel panel-default" style="margin-top: 20px; width: 100%">
+        <div style="position: relative">
+          <div style="overflow-x: scroll; margin-left: 10px; margin-right: 10px">
+            <table class="table" style="overflow: auto; width: 100%">
+              <tr class="compare-table-tr">
+                <td>
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio"><label style="font-size: 14pt">Primary</label>
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio"><label style="font-size: 14pt">Match {{$index}}</label>
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio">{{ctrl.doc.id}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input style="visibility:  hidden;: none;" ng-if="m.id" name="id" type="radio">{{m.id}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.first}}" ng-model="ctrl.resolved[ctrl.tab].first"  ng-if="ctrl.doc.first" name="first" type="radio">{{ctrl.doc.first | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.first}}" ng-model="ctrl.resolved[ctrl.tab].first" ng-if="m.first"        name="first" type="radio">{{m.first | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.middle}}" ng-model="ctrl.resolved[ctrl.tab].middle" ng-if="ctrl.doc.middle" name="middle" type="radio">{{ctrl.doc.middle | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.middle}}" ng-model="ctrl.resolved[ctrl.tab].middle" ng-if="m.middle" name="middle" type="radio">{{m.middle | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.last}}" ng-model="ctrl.resolved[ctrl.tab].last" ng-if="ctrl.doc.last" name="last" type="radio">{{ctrl.doc.last | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.last}}" ng-model="ctrl.resolved[ctrl.tab].last" ng-if="m.last" name="last" type="radio">{{m.last | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.passport}}" ng-model="ctrl.resolved[ctrl.tab].passport" ng-if="ctrl.doc.passport" name="passport" type="radio">{{ctrl.doc.passport | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.passport}}" ng-model="ctrl.resolved[ctrl.tab].passport" ng-if="m.passport" name="passport" type="radio">{{m.passport | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.birthdate}}" ng-model="ctrl.resolved[ctrl.tab].birthdate" ng-if="ctrl.doc.birthdate" name="birthdate" type="radio">{{ctrl.doc.birthdate | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.birthdate}}" ng-model="ctrl.resolved[ctrl.tab].birthdate" ng-if="m.birthdate" name="birthdate" type="radio">{{m.birthdate | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.birthplace}}" ng-model="ctrl.resolved[ctrl.tab].birthplace" ng-if="ctrl.doc.birthplace" name="birthplace" type="radio">{{ctrl.doc.birthplace | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.birthplace}}" ng-model="ctrl.resolved[ctrl.tab].birthplace" ng-if="ctrl.doc.birthplace" name="birthplace" type="radio">{{m.birthplace | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.gender}}" ng-model="ctrl.resolved[ctrl.tab].gender" ng-if="ctrl.doc.gender" name="gender" type="radio">{{ctrl.doc.gender | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.gender}}" ng-model="ctrl.resolved[ctrl.tab].gender" ng-if="m.gender" name="gender" type="radio">{{m.gender | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.id}}" ng-change="ctrl.choose(ctrl.doc, ctrl.tab)" ng-model="ctrl.allresolved[ctrl.tab]" type="radio">All
+                </td>
+                <td ng-repeat="m in ctrl.tabs['conflicts'].data">
+                  <input value="{{m.id}}" ng-change="ctrl.choose(m, ctrl.tab)" ng-model="ctrl.allresolved[ctrl.tab]" type="radio">All &nbsp;
+                </td>
+              </tr>
+            </table></div>
+        </div>
+      </div>
+    </div>
+    -->
+  </div>
+
+</div>
+<div ng-if="ctrl.matches.length === 0 && ctrl.conflicts.length === 0 && ctrl.permMatch.length == 0">
+  <div class="jumbotron" style="margin-top: 50px">
+    <h1>Nothing to Resolve</h1>
+  </div>
+</div>
+
+<div class="row" style="margin-top: 50px;">
+  <div class="col-md-2">
+    <button class="btn btn-default" onclick="window.history.back()">Back</button>
+  </div>
+</div>

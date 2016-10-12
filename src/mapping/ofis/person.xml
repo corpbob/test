@@ -1,0 +1,30 @@
+<mapping>
+  <!-- 
+    The fields might look redundant/useless. But this will serve
+    to have everything generic. This assumes that the same structure
+    applies to the <enhanced> record.
+   -->
+  <id>id</id>
+  <first>first</first>
+  <middle>middle</middle>
+  <last>last</last>
+  <dob>dob</dob>
+  <gender>gender</gender>
+  <passport>passport</passport>
+  <rootname>person</rootname>
+  <!-- 
+    These will be specific to ofis. These will not be used for comparison, rather
+    used as a means of knowing what to pull from enhanced record to ofis.
+    
+    Having them added here makes the original generate-enhanced-record to still
+    apply.
+   -->
+  <!-- source department -->
+  <source>source</source>
+  <!-- 
+    uri from source, e.g. /enhanced/dfa/person/1.xml
+    this could then be used as a way to see details of the raw document using
+    the same page as before. 
+    -->
+  <rawuri>rawuri</rawuri>
+</mapping>

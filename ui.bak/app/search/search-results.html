@@ -1,0 +1,25 @@
+  <ul class="list-group col-md-12" style="min-height: 500px; padding: 0px; background-color: white; border-radius: 5px">
+    <li ng-repeat="result in results" class="list-group-item" style="padding: 10px; margin-right: 10px; margin-left: 10px; margin-top: 10px">
+      <a ng-if="result.matches.length > 0" ui-sref="root.compare( { uri: result.uri })">
+        <div style="text-transform: none; display: inline-block; margin-right: 5px;">
+          <div>{{result.resolved.last}}, {{result.resolved.first}} {{result.resolved.middle}} <span ng-repeat="p in result.resolved.passport"> -- {{p}} </span>{{result.resolved.dob}}
+            <label ng-if="result.matches.length > 0"
+              style="color: black; border-width: medium; border-style: solid; border-color: yellow; padding-left: 5px; padding-right: 5px;">{{result['match-count']}}</label>
+            &nbsp;&nbsp;
+          </div>
+
+        </div>
+      </a>
+        <a ng-if="!result.matches || result.matches.length === 0" ui-sref="root.view( { uri: result.uri })">
+            <div style="text-transform: none; display: inline-block; margin-right: 5px;">
+                <div>{{result.resolved.last}}, {{result.resolved.first}} {{result.resolved.middle}} <span> -- {{result.resolved.passport[0]}}</span> {{result.resolved.dob}} {{result.resolved.birthplace}}
+                    <label ng-if="result.matches.length > 1"
+                           style="color: black; border-width: medium; border-style: solid; border-color: yellow; padding-left: 5px; padding-right: 5px;">{{result['match-count']}}</label>
+                    &nbsp;&nbsp;
+                </div>
+
+            </div>
+        </a>
+    </li>
+  </ul>
+

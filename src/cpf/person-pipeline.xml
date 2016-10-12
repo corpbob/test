@@ -1,0 +1,137 @@
+<pipeline xmlns="http://marklogic.com/cpf/pipelines">
+  <pipeline-name>Person pipeline</pipeline-name>
+  <pipeline-description>Pipeline to generate the enhanced person record</pipeline-description>
+  <success-action>
+    <module>/MarkLogic/cpf/actions/success-action.xqy</module>
+  </success-action>
+  <failure-action>
+    <module>/MarkLogic/cpf/actions/failure-action.xqy</module>
+  </failure-action>
+
+  <!-- queue person records -->  
+  <state-transition>
+    <annotation>
+      Generate exact matches
+    </annotation>
+    <state>http://marklogic.com/states/initial</state>
+    <on-success>generate-matches</on-success>
+    <on-failure>http://marklogic.com/states/error</on-failure>
+    <execute>
+      <condition>
+        <module>/MarkLogic/cpf/actions/namespace-condition.xqy</module>
+        <options xmlns="/MarkLogic/cpf/actions/namespace-condition.xqy">
+          <root-element>person</root-element>
+          <namespace />
+        </options>
+      </condition>
+      <action>
+        <module>/cpf/generate-perm-matches-action.xqy</module>
+      </action>
+    </execute>
+  </state-transition>
+  <state-transition>
+    <annotation>
+      Generate exact matches
+    </annotation>
+    <state>http://marklogic.com/states/updated</state>
+    <on-success>generate-matches</on-success>
+    <on-failure>http://marklogic.com/states/error</on-failure>
+    <execute>
+      <condition>
+        <module>/MarkLogic/cpf/actions/namespace-condition.xqy</module>
+        <options xmlns="/MarkLogic/cpf/actions/namespace-condition.xqy">
+          <root-element>person</root-element>
+          <namespace />
+        </options>
+      </condition>
+      <action>
+        <module>/cpf/generate-perm-matches-action.xqy</module>
+      </action>
+    </execute>
+  </state-transition>
+  
+  <!-- custom states -->
+  <state-transition>
+    <annotation>
+      Generate exact matches
+    </annotation>
+    <state>generate-exact</state>
+    <on-success>generate-matches</on-success>
+    <on-failure>http://marklogic.com/states/error</on-failure>
+    <execute>
+      <condition>
+        <module>/MarkLogic/cpf/actions/namespace-condition.xqy</module>
+        <options xmlns="/MarkLogic/cpf/actions/namespace-condition.xqy">
+          <root-element>person</root-element>
+          <namespace />
+        </options>
+      </condition>
+      <action>
+        <module>/cpf/generate-perm-matches-action.xqy</module>
+      </action>
+    </execute>
+  </state-transition>
+  
+  <state-transition>
+    <annotation>
+      Generate matches
+    </annotation>
+    <state>generate-matches</state>
+    <on-success>generate-conflicts</on-success>
+    <on-failure>http://marklogic.com/states/error</on-failure>
+    <execute>
+      <condition>
+        <module>/MarkLogic/cpf/actions/namespace-condition.xqy</module>
+        <options xmlns="/MarkLogic/cpf/actions/namespace-condition.xqy">
+          <root-element>person</root-element>
+          <namespace />
+        </options>
+      </condition>
+      <action>
+        <module>/cpf/generate-matches-action.xqy</module>
+      </action>
+    </execute>
+  </state-transition>
+  
+  <state-transition>
+    <annotation>
+      Generate conflicts
+    </annotation>
+    <state>generate-conflicts</state>
+    <on-success>create-enhanced</on-success>
+    <on-failure>http://marklogic.com/states/error</on-failure>
+    <execute>
+      <condition>
+        <module>/MarkLogic/cpf/actions/namespace-condition.xqy</module>
+        <options xmlns="/MarkLogic/cpf/actions/namespace-condition.xqy">
+          <root-element>person</root-element>
+          <namespace />
+        </options>
+      </condition>
+      <action>
+        <module>/cpf/generate-conflicts-action.xqy</module>
+      </action>
+    </execute>
+  </state-transition>
+  
+  <state-transition>
+    <annotation>
+      Create/update the enhanced document. Add/update the match/conflict count as needed.
+    </annotation>
+    <state>create-enhanced</state>
+    <on-success>http://marklogic.com/states/done</on-success>
+    <on-failure>http://marklogic.com/states/error</on-failure>
+    <execute>
+      <condition>
+        <module>/MarkLogic/cpf/actions/namespace-condition.xqy</module>
+        <options xmlns="/MarkLogic/cpf/actions/namespace-condition.xqy">
+          <root-element>person</root-element>
+          <namespace />
+        </options>
+      </condition>
+      <action>
+        <module>/cpf/generate-enhanced-record-action.xqy</module>
+      </action>
+    </execute>
+  </state-transition>
+</pipeline>

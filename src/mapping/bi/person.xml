@@ -1,0 +1,11 @@
+<mapping>
+  <id>ID</id>
+  <first>FIRSTNAME</first>
+  <middle>MIDDLENAME</middle>
+  <last>SURNAME</last>
+  <dob>BIRTHDATE</dob>
+  <gender>GENDER</gender>
+  <passport>passport</passport>
+  <passportdoc>travel</passportdoc>
+  <rootname>person</rootname>
+</mapping>

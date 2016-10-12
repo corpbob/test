@@ -1,0 +1,199 @@
+(function () {
+  'use strict';
+
+  var fields = [ 'id', 'first', 'middle', 'last', 'passport', 'birthdate', 'birthplace', 'gender', 'baseUri'];
+  var tabnames = [ 'matches', 'conflicts', 'permMatch'];
+  var delimiter = '|';
+  var tabLabels = {
+    'ofis': {
+      'matches': 'Match',
+      'conflicts': 'Conflict',
+      'permMatch': 'Permanent Match'
+    },
+    'non-ofis': {
+      'matches': 'Duplicate',
+      'conflicts': 'Conflict',
+      'permMatch': 'Permanent Duplicate'
+    }
+  };
+
+
+  angular.module('app.compare').filter('stripPrefix', function() {
+    return function(input) {
+      if(input){
+        var idx = input.indexOf(delimiter);
+        if(idx > -1){
+          return input.substring(idx+1);
+        }
+        return input;
+      }
+    };
+  }).filter('uuidPrefix', function() {
+    return function(uuid) {
+      if(uuid){
+        var idx = uuid.indexOf('-');
+        if(idx > -1){
+          return uuid.substring(0,idx);
+        }
+        return uuid;
+      }
+    };
+  })
+
+  .controller('CompareCtrl', CompareCtrl);
+
+  CompareCtrl.$inject = ['doc', '$stateParams', 'MLRest', '$rootScope'];
+
+  function CompareCtrl(doc, $stateParams, MLRest, $rootScope) {
+
+    /*var str = $stateParams.uri.substring('/enhanced/'.length);
+    var idx = str.indexOf('/');
+    var page = 'bi';
+    if(idx > -1){
+      page = str.substring(0,idx);
+    }
+
+    $rootScope.$emit('ofis:title', page.toUpperCase() + ' ' + 'De-duplication');
+    */
+    var ctrl = this;
+    this.mlRest = MLRest;
+    ctrl.matches = [];
+    ctrl.conflicts = [];
+    ctrl.permMatch = [];
+    //ctrl.page = page;
+    ctrl.doc = doc.data.person;
+    ctrl.doc.isResolved = true;
+
+    //ctrl.labels = tabLabels[ctrl.page];
+    if(!ctrl.labels){
+      ctrl.labels = tabLabels['non-ofis'];
+    }
+
+    /*ctrl.doc.chosen = {
+      first: true
+    };*/
+
+    var i=0;
+
+    //this will contain resolved persons for each tab.
+    ctrl.resolved = {
+      matches: {},
+      conflicts: {},
+      permMatch: {}
+    };
+
+
+    ctrl.allresolved = {
+      matches: "",
+      conflicts: "",
+      permMatch: ""
+    };
+
+    //angular.copy(ctrl.doc, ctrl.resolved);
+
+
+    for(var i=0;i<fields.length;i++){
+      var field = fields[i];
+      for(var j=0; j<tabnames.length;j++){
+        var tab = tabnames[j];
+        var value = ctrl.doc[field];
+        if(value){
+          ctrl.resolved[tab][field] = String(value);
+        }
+      }
+    }
+
+    //initialize the resolved
+
+    if(ctrl.doc.matches){
+      for (var idx=0, max=ctrl.doc.matches.length; idx < max; ++idx) {
+        var item = ctrl.doc.matches[idx]
+        if (item == null || item.person == null) {
+          continue
+        }
+        item.person.oldstatus = 'matches';
+        item.person.status = 'matches';
+        item.person.isResolved = false;
+        //augment(item.person);
+        ctrl.matches.push(item.person);
+      }
+    }
+
+    if(ctrl.doc.conflicts){
+      for (var idx=0, max=ctrl.doc.conflicts.length; idx < max; ++idx) {
+        var item = ctrl.doc.conflicts[idx]
+        if (item == null || item.person == null) {
+          continue
+        }
+        item.person.oldstatus = 'conflicts';
+        item.person.status = 'conflicts';
+        item.person.isResolved = false;
+        //augment(item.person);
+        ctrl.conflicts.push(item.person);
+      }
+    }
+
+    if(ctrl.doc['permanent-matches']){
+      for (var idx=0, max=ctrl.doc['permanent-matches'].length; idx < max; ++idx) {
+        var item = ctrl.doc['permanent-matches'][idx]
+        if (item == null || item.person == null) {
+          continue
+        }
+        item.person.oldstatus = 'permMatch';
+        item.person.status = 'permMatch';
+        item.person.isResolved = true;
+        ctrl.permMatch.push(item.person);
+      }
+    }
+
+    //determine which tab to activate
+    ctrl.tab = 'matches';
+
+    for(var i=0;i<tabnames.length;i++){
+      var a = ctrl[tabnames[i]];
+      if(a.length > 0){
+        ctrl.tab = tabnames[i];
+        break;
+      }
+    }
+
+    var uri = $stateParams.uri;
+  }
+
+  CompareCtrl.prototype.show = function(type){
+    this.tab = type;
+  };
+
+  function updateArrays(tabs, tabFrom, tabTo){
+
+    //remove from old array
+    var tabdata = tabs[tabFrom];
+    var index = tabdata.index;
+    var data = tabdata.data;
+    var length = data.length;
+
+    var removed = data.splice(index,1);
+    var person = removed[0];
+    if(index > 0 && index + 1 === length){
+      tabdata.index = 0; //we are at the end of the array, reset.
+      tabdata.current = data[0];
+    }
+
+    if(index === 0){
+      tabdata.index = -1;
+      tabdata.current = null;
+    }
+
+    //add to new tab
+    var newTabData = tabs[tabTo];
+    newTabData.data.push(person);
+    newTabData.current = newTabData.data[0];
+    newTabData.index = 0;
+
+  }
+
+  CompareCtrl.prototype.submit = function(person){
+    console.log('resolved: ', person);
+    alert(person.first);
+  };
+}());

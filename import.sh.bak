@@ -1,0 +1,13 @@
+export JVM_OPTS="-Xmx1024m -Xms1024m -XX:-UseConcMarkSweepGC" 
+json_dir="../ofis-slush-new-json"
+#for count in 1 2 3 4
+#do
+#./ml local mlcp import -input_file_type documents -input_file_path $json_dir/$count  -output_collections latest -document_type JSON  -output_uri_prefix "/data" -output_uri_replace ".*data,'/data'"
+#/usr/local/mlcp/bin/mlcp.sh import --host localhost --port 30041 --username admin --password admin --input_file_type documents --input_file_path $json_dir/$count -output_uri_replace ".*data,'/data'" -output_collections "latest" -document_type JSON
+/usr/local/mlcp/bin/mlcp.sh import --host localhost --port 30041 --username admin --password admin --input_file_type sequencefile --input_file_path seq_output -sequencefile_key_class \
+    com.marklogic.contentpump.examples.SimpleSequenceFileKey \
+    -sequencefile_value_class \
+    com.marklogic.contentpump.examples.SimpleSequenceFileValue \
+    -sequencefile_value_type Text -output_collections "latest" -document_type JSON
+#done
+#./ml local mlcp import -input_file_type delimited_text -input_file_path ./data/bi_travel_table_partial.csv -transform_module /transform/mlcp/ingest-basic.xqy -transform_namespace "http://asti.dost.gov.ph/ofis/mlcp/ingest-basic" -output_uri_prefix "/bi/travel/" -output_uri_suffix .xml

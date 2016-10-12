@@ -1,0 +1,30 @@
+<div ng-if="ctrl.model.doc.matches.length > 0 || ctrl.model.doc.rejected.length > 0 || ctrl.model.doc.merged.length > 0">
+
+  <ul class="nav nav-tabs" style="margin-top: 20px">
+    <li role="presentation" ng-class="{ active: ctrl.tab === 'matches', inactive: ctrl.tab !== 'matches' }" ng-click="ctrl.show('matches')"><a href="#">{{ctrl.labels['matches']}}</a>
+
+    </li>
+    <li role="presentation" ng-if="ctrl.model.doc.rejected.length > 0" ng-class="{ active: ctrl.tab === 'rejected', inactive: ctrl.tab !== 'rejected' }" ng-click="ctrl.show('rejected')"><a href="#">{{ctrl.labels['rejected']}}</a></li>
+    <li role="presentation" ng-if="ctrl.model.doc.permMatch.length > 0" ng-class="{ active: ctrl.tab === 'permMatch', inactive: ctrl.tab !== 'permMatch' }" ng-click="ctrl.show('permMatch')"><a href="#">{{ctrl.labels['permMatch']}}</a></li>
+  </ul>
+
+  <div ng-if="ctrl.tab === 'matches'" style="border-style: hidden; border-radius: 5px;">
+    <compare-dir model="ctrl.model" tab-name="ctrl.tab"  on-submit="ctrl.submit(resolved)" on-update="ctrl.updateArray(name, item)" label="ctrl.labels[ctrl.tab]"/>
+  </div>
+
+  <div ng-if="ctrl.tab === 'rejected' && ctrl.model.doc.rejected.length > 0">
+    <compare-dir model="ctrl.model" tab-name="ctrl.tab"  on-submit="ctrl.submit(resolved)" on-update="ctrl.updateArray(name, item)"/>
+  </div>
+
+  <div ng-if="ctrl.tab === 'merged' && ctrl.model.doc.merged.length > 0">
+    <compare-dir model="ctrl.model" tab-name="ctrl.tab"  on-submit="ctrl.submit(resolved)"/>
+  </div>
+
+</div>
+<div ng-if="ctrl.model.doc.matches.length === 0 && ctrl.model.doc.conflicts.length === 0 && ctrl.model.doc.permMatch.length == 0">
+  <div class="jumbotron" style="margin-top: 50px">
+    <h1>Nothing to Resolve</h1>
+  </div>
+</div>
+
+

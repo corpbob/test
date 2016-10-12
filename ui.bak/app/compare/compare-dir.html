@@ -1,0 +1,309 @@
+<div>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Confirm to {{operation}}</h3>
+    </div>
+    <div class="modal-body">
+        {{person.first}} {{person.middle}} {{person.last}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="handleRejectUndo()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+  <div style="height: 515px; background-color: white">
+    <div class="panel panel-default" style="float:left;width: 10%; margin-top: 20px; height: 95%; margin-left: 5px;">
+      <table class="table">
+        <tr>
+          <td><label style="font-size: 14pt">Fields</label></td>
+        </tr>
+        <tr>
+          <td><label>ID</label></td>
+        </tr>
+        <tr>
+          <td><label>First Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Middle Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Last Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Passport</label></td>
+        </tr>
+        <tr>
+          <td><label>Birthdate</label></td>
+        </tr>
+        <tr>
+          <td><label>Birthplace</label></td>
+        </tr>
+        <tr>
+          <td><label>Gender</label></td>
+        </tr>
+          <tr>
+              <td><label>Source</label></td>
+          </tr>
+        <tr>
+          <td></td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div class="panel panel-default" style="float:left;width: 23%; margin-top: 20px; margin-left: 5px; height: 95%">
+      <table class="table">
+        <tr>
+          <td><label style="font-size: 14pt">Master Record</label></td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.id | stripPrefix | uuidPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.first | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.middle | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.last | stripPrefix}}</td>
+        </tr>
+        <tr>
+
+          <td>{{ctrl.resolved['passport-list'] | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.dob | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.birthplace | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.gender | stripPrefix | stripPrefix}}</td>
+        </tr>
+          <tr>
+              <td>{{ctrl.resolved.source | stripPrefix | stripPrefix}}</td>
+          </tr>
+        <tr>
+          <td><button ng-disabled="ctrl.model.doc.matches.length === 0" ng-click="ctrl.merge()" class="btn btn-danger">Merge</button></td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div style="width: 65%;float:right; margin-left: 2.5px; margin-right: 5px">
+      <div class="panel panel-default" style="margin-top: 20px">
+        <div style="position: relative">
+          <div class="table-responsive" style="position: relative; margin-left: 10px; margin-right: 10px">
+              <div ng-if="ctrl.tabName === 'matches'">
+                  <table class="table" style="overflow: auto; width: 100%; margin-top: -1px;">
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input style="visibility:hidden" ng-if="ctrl.primary.id" name="id" type="radio"><label style="font-size: 14pt">Primary</label>
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input style="visibility:hidden" ng-if="ctrl.model.doc.id" name="id" type="radio"><label style="font-size: 14pt">{{ctrl.model.columnLabelData[ctrl.tabName]}} {{$index + 1}}</label>
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input style="visibility:  hidden;: none;" ng-if="ctrl.primary.id" name="id" type="radio">{{ctrl.primary.id}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input style="visibility:  hidden;: none;" ng-if="m.id" name="id" type="radio">{{ctrl.doc[ctrl.tabName][$index].id}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td>
+                              <input ng-disabled="!ctrl.primary.merge || ctrl.model.doc.matches.length === 0" value="{{ctrl.primary.first}}" ng-model="ctrl.resolved.first" ng-if="ctrl.primary.first"        name="first" type="radio">{{ctrl.model.doc.resolved.first}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-class="{ radio_hide_equal: m.first_equal === true, radio_hide_not_equal: m.first_equal === false }" ng-disabled="!m.merge && m.first_equal" value="{{m.first}}" ng-model="ctrl.resolved.first" ng-if="m.first"        name="first" type="radio">{{ctrl.doc[ctrl.tabName][$index].first}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td>
+                              <input ng-disabled="!ctrl.primary.merge  || ctrl.model.doc.matches.length === 0" value="{{ctrl.primary.middle}}" ng-model="ctrl.resolved.middle" ng-if="ctrl.primary.middle"        name="middle" type="radio">{{ctrl.model.doc.resolved.middle}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-class="{ radio_hide_equal: m.middle_equal === true, radio_hide_not_equal: m.middle_equal === false }" ng-disabled="!m.merge" value="{{m.middle}}" ng-model="ctrl.resolved.middle" ng-if="m.middle" name="middle" type="radio">{{ctrl.doc[ctrl.tabName][$index].middle}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input ng-disabled="!ctrl.primary.merge  || ctrl.model.doc.matches.length === 0" value="{{ctrl.primary.last}}" ng-model="ctrl.resolved.last" ng-if="ctrl.primary.last"        name="last" type="radio">{{ctrl.model.doc.resolved.last}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-class="{ radio_hide_equal: m.last_equal === true, radio_hide_not_equal: m.last_equal === false }" ng-disabled="!m.merge" value="{{m.last}}" ng-model="ctrl.resolved.last" ng-if="m.last" name="last" type="radio">{{ctrl.doc[ctrl.tabName][$index].last}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input ng-disabled="!ctrl.primary.merge  || ctrl.model.doc.matches.length === 0" ng-model="ctrl.primary.choosePassport" ng-change="ctrl.handlePassport(ctrl.primary)" ng-if="ctrl.primary.passport[0]"        name="passport" type="checkbox">{{ctrl.model.doc.resolved.passport[0]}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-disabled="!m.merge" ng-model="m.choosePassport" ng-change="ctrl.handlePassport(m)" ng-if="m.passport[0]" name="passport" type="checkbox">{{ctrl.doc[ctrl.tabName][$index].passport[0]}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input ng-disabled="!ctrl.primary.merge  || ctrl.model.doc.matches.length === 0" value="{{ctrl.primary.dob}}" ng-model="ctrl.resolved.dob" ng-if="ctrl.primary.dob"        name="dob" type="radio">{{ctrl.model.doc.resolved.dob}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-class="{ radio_hide_equal: m.dob_equal === true, radio_hide_not_equal: m.dob_equal === false }" ng-disabled="!m.merge" value="{{m.dob}}" ng-model="ctrl.resolved.dob" ng-if="m.dob" name="dob" type="radio">{{ctrl.doc[ctrl.tabName][$index].dob}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input ng-disabled="!ctrl.primary.merge  || ctrl.model.doc.matches.length === 0" value="{{ctrl.primary.birthplace}}" ng-model="ctrl.resolved.birthplace" ng-if="ctrl.primary.birthplace"        name="birthplace" type="radio">{{ctrl.model.doc.resolved.birthplace}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-class="{ radio_hide_equal: m.birthplace_equal === true, radio_hide_not_equal: m.birthplace_equal === false }" ng-disabled="!m.merge" value="{{m.birthplace}}" ng-model="ctrl.resolved.birthplace" ng-if="m.birthplace" name="birthplace" type="radio">{{ctrl.doc[ctrl.tabName][$index].birthplace}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input ng-disabled="!ctrl.primary.merge  || ctrl.model.doc.matches.length === 0" value="{{ctrl.primary.gender}}" ng-model="ctrl.resolved.gender" ng-if="ctrl.primary.gender"        name="gender" type="radio">{{ctrl.model.doc.resolved.gender}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-class="{ radio_hide_equal: m.gender_equal === true, radio_hide_not_equal: m.gender_equal === false }" ng-disabled="!m.merge" value="{{m.gender}}" ng-model="ctrl.resolved.gender" ng-if="m.gender" name="gender" type="radio">{{ctrl.doc[ctrl.tabName][$index].gender}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input style="visibility: hidden" ng-disabled="!ctrl.isResolved" value="{{ctrl.primary.source}}" ng-model="ctrl.resolved.source" ng-if="ctrl.primary.source"        name="source" type="radio">{{ctrl.model.doc.resolved.source}}&nbsp;
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input style="visibility: hidden" ng-disabled="!m.isResolved" value="{{m.source}}" ng-model="ctrl.resolved.source" ng-if="m.source" name="source" type="radio">{{ctrl.doc[ctrl.tabName][$index].source}}&nbsp;
+                          </td>
+                      </tr>
+
+                      <tr class="compare-table-tr">
+                          <td>
+                              <input disabled ng-change="ctrl.choose(ctrl.primary)" ng-model="ctrl.primary.merge" type="checkbox">Include &nbsp;
+                              <input disabled data-toggle="modal" data-target="#myModal" ng-change="ctrl.unmatch(ctrl.primary)" ng-model="ctrl.primary.unmatch" type="checkbox">Reject
+                          </td>
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input ng-change="ctrl.choose(m)" ng-model="m.merge" type="checkbox">Include &nbsp;
+                              <input data-toggle="modal" data-target="#myModal" ng-change="ctrl.unmatch(m)" ng-model="m.unmatch" type="checkbox">Reject
+                          </td>
+                      </tr>
+
+
+                      <!--
+
+                    <tr class="compare-table-tr">
+
+                      <td ng-repeat="m in ctrl.itemsArray">
+                        <input ng-if="!m.loading" ng-change="ctrl.samePerson(m)" ng-model="m.isResolved" type="checkbox"> Match
+                        <img ng-if="m.loading" src="/images/ajax-loader.gif">
+                      </td>
+                    </tr>
+                      -->
+                  </table>
+
+              </div>
+              <div ng-if="ctrl.tabName === 'rejected'">
+                  <table class="table" style="overflow: auto; width: 100%; margin-top: -1px;">
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <label style="font-size: 14pt">{{ctrl.model.columnLabelData[ctrl.tabName]}} {{$index + 1}}</label>
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].id}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].first}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].middle}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].last}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].passport[0]}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].dob}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].birthplace}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].gender}}&nbsp;
+                          </td>
+                      </tr>
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              {{ctrl.doc[ctrl.tabName][$index].source}}&nbsp;
+                          </td>
+                      </tr>
+
+                      <tr class="compare-table-tr">
+
+                          <td ng-repeat="m in ctrl.model.itemsArray">
+                              <input data-toggle="modal" data-target="#myModal" ng-change="ctrl.unReject(m)" ng-model="m.unReject" type="checkbox">Undo
+                          </td>
+                      </tr>
+
+
+                      <!--
+
+                    <tr class="compare-table-tr">
+
+                      <td ng-repeat="m in ctrl.itemsArray">
+                        <input ng-if="!m.loading" ng-change="ctrl.samePerson(m)" ng-model="m.isResolved" type="checkbox"> Match
+                        <img ng-if="m.loading" src="/images/ajax-loader.gif">
+                      </td>
+                    </tr>
+                      -->
+                  </table>
+
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 50px;">
+    <div class="col-md-3">
+      <button class="btn btn-default" onclick="window.history.back()">Back</button>
+      <!--
+      <button class="btn btn-success" ng-click="ctrl.submit({ resolved: ctrl.resolved })">Submit</button>
+      -->
+    </div>
+
+  </div>
+
+</div>

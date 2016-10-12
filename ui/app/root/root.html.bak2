@@ -1,0 +1,38 @@
+<div class="header">
+  <div class="container">
+    <div class="row">
+
+      <div class="logo col-md-6">
+        <a href="/classic"><img src="/images/earth77.png" class="pull-left"></a>
+        <h2 class="pull-left">
+          &nbsp;OFIS
+        </h2>
+      </div>
+
+      {{ctrl.currentUser}}
+      <div ng-hide="user.authenticated">
+
+        &nbsp;
+      </div>
+      {{model.user}}
+      <div >
+        <ml-user></ml-user>
+
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="main" style="background-color:#007700">
+  <div class="container">
+    <div class="search-center">
+
+      <ui-view></ui-view>
+    </div>
+  </div>
+  This is a test.
+</div>

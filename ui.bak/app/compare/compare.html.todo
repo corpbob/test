@@ -1,0 +1,36 @@
+<div ng-if="ctrl.matches.length > 0 || ctrl.conflicts.length > 0 || ctrl.permMatch.length > 0">
+
+  <ul class="nav nav-tabs" style="margin-top: 20px">
+      <li role="presentation" ng-if="ctrl.matches.length > 0" ng-class="{ active: ctrl.tab === 'matches', inactive: ctrl.tab !== 'matches' }" ng-click="ctrl.show('matches')"><a href="#">Match</a>
+
+      </li>
+      <li role="presentation" ng-if="ctrl.conflicts.length > 0" ng-class="{ active: ctrl.tab === 'conflicts', inactive: ctrl.tab !== 'conflicts' }" ng-click="ctrl.show('conflicts')"><a href="#">Conflict</a></li>
+      <li role="presentation" ng-if="ctrl.permMatch.length > 0" ng-class="{ active: ctrl.tab === 'permMatch', inactive: ctrl.tab !== 'permMatch' }" ng-click="ctrl.show('permMatch')"><a href="#">Perm Match</a></li>
+    </ul>
+
+  <div ng-if="ctrl.tab === 'matches' && ctrl.matches.length > 0">
+    <compare-dir tab="ctrl.tab" items-array="ctrl[ctrl.tab]"/>
+  </div>
+
+   <div ng-if="ctrl.tab === 'conflicts' && ctrl.conflicts.length > 0">
+      <compare-dir tab="ctrl.tab" items-array="ctrl[ctrl.tab]"/>
+    </div>
+
+     <div ng-if="ctrl.tab === 'permMatch' && ctrl.permMatch.length > 0">
+        <compare-dir tab="ctrl.tab" items-array="ctrl[ctrl.tab]"/>
+      </div>
+
+</div>
+<div ng-if="ctrl.matches.length === 0 && ctrl.conflicts.length === 0 && ctrl.permMatch.length == 0">
+  <div class="jumbotron" style="margin-top: 50px">
+    <h1>Nothing to Resolve</h1>
+  </div>
+</div>
+
+<div class="row" style="margin-top: 50px;">
+  <div class="col-md-3">
+    <button class="btn btn-default" onclick="window.history.back()">Back</button>
+    <button class="btn btn-success" ng-click="submit()">Submit</button>
+  </div>
+
+</div>

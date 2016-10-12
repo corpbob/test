@@ -1,0 +1,186 @@
+<div>
+  <div style="height: 515px; background-color: white">
+    <div class="panel panel-default" style="float:left;width: 10%; margin-top: 20px; height: 95%; margin-left: 5px;">
+      <table class="table">
+        <tr>
+          <td><label style="font-size: 14pt">Fields</label></td>
+        </tr>
+        <tr>
+          <td><label>ID</label></td>
+        </tr>
+        <tr>
+          <td><label>First Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Middle Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Last Name</label></td>
+        </tr>
+        <tr>
+          <td><label>Passport</label></td>
+        </tr>
+        <tr>
+          <td><label>Birthdate</label></td>
+        </tr>
+        <tr>
+          <td><label>Birthplace</label></td>
+        </tr>
+        <tr>
+          <td><label>Gender</label></td>
+        </tr>
+        <tr>
+          <td></td>
+        </tr>
+      </table>
+
+    </div>
+
+
+    <div class="panel panel-default" style="float:left;width: 23%; margin-top: 20px; margin-left: 5px; height: 95%">
+      <table class="table">
+        <tr>
+          <td><label style="font-size: 14pt">Master Record</label></td>
+        </tr>
+        <tr>
+          <td>{{ctrl.doc.id | stripPrefix | uuidPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.first | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.middle | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.last | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.passport | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.birthdate | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.birthplace | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td>{{ctrl.resolved.gender | stripPrefix | stripPrefix}}</td>
+        </tr>
+        <tr>
+          <td></td>
+        </tr>
+      </table>
+
+    </div>
+
+    <div style="width: 65%;float:right; margin-left: 2.5px; margin-right: 5px">
+      <div class="panel panel-default" style="margin-top: 20px">
+        <div style="position: relative">
+          <div class="table-responsive" style="position: relative; margin-left: 10px; margin-right: 10px">
+            <table class="table" style="overflow: auto; width: 100%; margin-top: -1px;">
+              <tr class="compare-table-tr">
+                <td>
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio"><label style="font-size: 14pt">Primary</label>
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio"><label style="font-size: 14pt">Match {{$index}}</label>
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input style="visibility:hidden" ng-if="ctrl.doc.id" name="id" type="radio">{{ctrl.doc.id | uuidPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input style="visibility:  hidden;: none;" ng-if="m.id" name="id" type="radio">{{m.id | uuidPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.first}}" ng-model="ctrl.resolved.first"  ng-if="ctrl.doc.first" name="first" type="radio">{{ctrl.doc.first | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.first}}" ng-model="ctrl.resolved.first" ng-if="m.first"        name="first" type="radio">{{m.first |stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.middle}}" ng-model="ctrl.resolved.middle" ng-if="ctrl.doc.middle" name="middle" type="radio">{{ctrl.doc.middle | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.middle}}" ng-model="ctrl.resolved.middle" ng-if="m.middle" name="middle" type="radio">{{m.middle | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.last}}" ng-model="ctrl.resolved.last" ng-if="ctrl.doc.last" name="last" type="radio">{{ctrl.doc.last | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.last}}" ng-model="ctrl.resolved.last" ng-if="m.last" name="last" type="radio">{{m.last | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.passport}}" ng-model="ctrl.resolved.passport" ng-if="ctrl.doc.passport" name="passport" type="radio">{{ctrl.doc.passport | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.passport}}" ng-model="ctrl.resolved.passport" ng-if="m.passport" name="passport" type="radio">{{m.passport | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.birthdate}}" ng-model="ctrl.resolved.birthdate" ng-if="ctrl.doc.birthdate" name="birthdate" type="radio">{{ctrl.doc.birthdate | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.birthdate}}" ng-model="ctrl.resolved.birthdate" ng-if="m.birthdate" name="birthdate" type="radio">{{m.birthdate | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.birthplace}}" ng-model="ctrl.resolved.birthplace" ng-if="ctrl.doc.birthplace" name="birthplace" type="radio">{{ctrl.doc.birthplace | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.birthplace}}" ng-model="ctrl.resolved.birthplace" ng-if="ctrl.doc.birthplace" name="birthplace" type="radio">{{m.birthplace | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.gender}}" ng-model="ctrl.resolved.gender" ng-if="ctrl.doc.gender" name="gender" type="radio">{{ctrl.doc.gender | stripPrefix}}
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.gender}}" ng-model="ctrl.resolved.gender" ng-if="m.gender" name="gender" type="radio">{{m.gender | stripPrefix}}&nbsp;
+                </td>
+              </tr>
+
+
+              <tr class="compare-table-tr">
+                <td>
+                  <input value="{{ctrl.doc.id}}" ng-change="ctrl.choose(ctrl.doc)" ng-model="ctrl.allresolved" type="radio">All
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-disabled="!m.isResolved" value="{{m.id}}" ng-change="ctrl.choose(m)" ng-model="ctrl.allresolved" type="radio">All &nbsp;
+                </td>
+              </tr>
+              <tr class="compare-table-tr">
+                <td>
+                  <input disabled ng-model="ctrl.doc.isResolved" type="checkbox"> Match
+                </td>
+                <td ng-repeat="m in ctrl.itemsArray">
+                  <input ng-if="!m.loading" ng-change="ctrl.samePerson(m)" ng-model="m.isResolved" type="checkbox"> Match
+                  <img ng-if="m.loading" src="/images/ajax-loader.gif">
+                </td>
+              </tr>
+            </table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 50px;">
+    <div class="col-md-3">
+      <button class="btn btn-default" onclick="window.history.back()">Back</button>
+      <button class="btn btn-success" ng-click="ctrl.submit({ resolved: ctrl.resolved })">Submit</button>
+    </div>
+
+  </div>
+
+</div>

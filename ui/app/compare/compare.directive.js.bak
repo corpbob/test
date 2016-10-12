@@ -1,0 +1,140 @@
+(function () {
+
+  'use strict';
+
+  angular.module('app.compare')
+    .directive('compareDir', CompareDirective)
+    .controller('CompareDirController', CompareDirController);
+
+  function CompareDirective() {
+    return {
+      restrict: 'EA',
+      controller: 'CompareDirController',
+      controllerAs: 'ctrl',
+      replace: true,
+      scope: {
+        doc: '=',
+        //page: '=',
+        tabName: '=',
+        itemsArray: '=',
+        //mode: '@',
+        submit: '&onSubmit'
+      },
+      templateUrl: 'app/compare/compare-dir.html'
+    };
+  }
+
+  CompareDirController.$inject = ['$scope', 'MLRest'];
+
+  var fields = [ 'id', 'first', 'middle', 'last', 'passport', 'birthdate', 'birthplace', 'gender', 'baseUri'];
+  var tabnames = [ 'matches', 'conflicts', 'permMatch'];
+  var delimiter = '|';
+
+
+  function augment(person){
+    for(var i=1;i<fields.length;i++){
+      var f = fields[i];
+      if(person[f]){
+        person[f]  = person.id + delimiter + person[f];
+      }
+    }
+  }
+
+  function reverseAugment(resolved){
+    var copy  = {};
+    angular.copy(resolved, copy);
+    for(var i=1;i<fields.length;i++){
+      var f = fields[i];
+      var value = copy.resolved[f]
+      if(value){
+        var idx = value.indexOf(delimiter);
+        if(idx > -1){
+          copy.resolved[f] = value.substring(idx + 1);
+        }
+      }
+    }
+
+    return copy;
+  }
+
+  function CompareDirController($scope, mlRest) {
+    var ctrl = this;
+    //ctrl.itemsArray = $scope.itemsArray;
+
+    ctrl.doc = {};
+    ctrl.mlRest = mlRest;
+    ctrl.submit = function(p){
+      var copy = reverseAugment(p);
+      $scope.submit(copy);
+    };
+
+    //ctrl.page = $scope.page;
+    angular.copy($scope.doc, ctrl.doc);
+
+    ctrl.doc.isResolved = true;
+    augment(ctrl.doc);
+    ctrl.resolved = {};
+    angular.copy(ctrl.doc, ctrl.resolved);
+
+    ctrl.allresolved = String($scope.doc.id);
+
+    ctrl.choose(ctrl.doc);
+
+
+    angular.extend(ctrl, {
+      itemsArray: $scope.itemsArray,
+      tab: $scope.tabName
+    });
+
+
+  }
+
+  CompareDirController.prototype.choose = function(chosen){
+    for(var i=1;i<fields.length;i++){
+      var field = fields[i];
+      var value = chosen[field];
+      if(value){
+        this.resolved[field] = String(value);
+      }
+    }
+  };
+
+
+  CompareDirController.prototype.samePerson = function(person){
+
+    var ctrl = this;
+    person.loading = true;
+    var idx = this.doc.baseUri.indexOf(delimiter);
+    var primary = this.doc.baseUri;
+    if(idx > -1 ){
+      primary = this.doc.baseUri.substring(idx + 1);
+    }
+
+    var settings = {
+      method: 'PUT',
+      params: {
+        'rs:primary': primary,
+        'rs:secondary': person.baseUri
+      },
+      data : {}
+
+    };
+
+    if(!person.isResolved){
+      settings.method = 'DELETE';
+    }
+
+    if(true){
+      this.mlRest.extension('perm-match', settings).success(function(data){
+        //updateArrays(ctrl.tabs, currentTab, newTab);
+        //ctrl.tab = newTab;
+        console.log(data);
+        delete person.loading;
+      }).error(function(data){
+        person.status = 'Error';
+      });
+    }
+
+  };
+
+}());

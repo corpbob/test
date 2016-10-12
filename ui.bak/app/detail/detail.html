@@ -1,0 +1,36 @@
+<div class="row detail">
+  <div class="col-lg-12" style="padding:0px;">
+    {{ctrl.result}}
+    <div class="panel panel-default" style="margin-top: 20px">
+      <ul class="list-group">
+        <li class="list-group-item"><div class="col-md-4"><label> ID:    </label></div>{{ctrl.doc.resolved.id}}&nbsp;</li>
+        <li class="list-group-item"><div class="col-md-4"><label> First Name:    </label></div>{{ctrl.doc.resolved.first}}&nbsp;</li>
+        <li class="list-group-item"><div class="col-md-4"><label> Middle Name:  </label></div>{{ctrl.doc.resolved.middle}}&nbsp;</li>
+        <li class="list-group-item"><div class="col-md-4"><label> Last Name:  </label></div>{{ctrl.doc.resolved.last}}&nbsp;</li>
+
+        <li class="list-group-item"><div class="col-md-4"><label> BirthDate:  </label></div>{{ctrl.doc.resolved.dob}}&nbsp;</li>
+        <li class="list-group-item"><div class="col-md-4"><label> BirthPlace:  </label></div>{{ctrl.doc.resolved.birthplace}}&nbsp;</li>
+        <li class="list-group-item"><div class="col-md-4"><label> Gender:  </label></div>{{ctrl.doc.resolved.gender}}&nbsp;</li>
+        <li class="list-group-item"><div class="col-md-4"><label> Civil Status:  </label></div>{{ctrl.doc.resolved.civil_status}}&nbsp;</li>
+      </ul>
+
+    </div>
+
+
+    <div class="col-md-10" style="padding: 0px;">
+      <button class="btn btn-default" onclick="window.history.back()">Back</button>
+    </div>
+  </div>
+  <!--
+  <div ng-if="loading" style="position:fixed; top:90px; left: 0px; right: 0px;
+bottom: 0px; background-color: rgba(0,0,0,0.5);">
+    <div style="position: absolute; width:300px; height: 120px; top: 50%; mar
+gin-top: -120px; left:0px; right:0px; margin-right: auto;margin-left: auto; text-
+align: center">
+      <div class="loader">Loading...</div>
+    </div>
+  </div>
+  -->
+  <!-- display JSON data -->
+  <!--<json-explorer data="model.detail"></json-explorer>-->
+</div>

@@ -1,0 +1,9 @@
+<properties xmlns="http://marklogic.com/rest-api">
+  <content-versions>none</content-versions>
+  <validate-options>true</validate-options>
+  <document-transform-out></document-transform-out>
+  <debug>false</debug>
+  <document-transform-all>true</document-transform-all>
+  <update-policy>merge-metadata</update-policy>
+  <validate-queries>false</validate-queries>
+</properties>
