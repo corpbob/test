@@ -6,6 +6,7 @@ var router = require('express').Router();
 var four0four = require('./utils/404')();
 var http = require('http');
 var config = require('../gulp.config')();
+var os = require("os");
 
 var options = {
   appPort: process.env.APP_PORT || config.defaultPort,
@@ -127,6 +128,10 @@ router.get('/user/logout', function(req, res) {
   noCache(res);
   delete req.session.user;
   res.send();
+});
+
+router.get('/hostname', function(req,res){
+  res.send("hostname: " + os.hostname());
 });
 
 router.get('/*', four0four.notFoundMiddleware);
